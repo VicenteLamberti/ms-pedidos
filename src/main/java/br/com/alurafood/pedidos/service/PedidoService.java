@@ -1,29 +1,29 @@
 package br.com.alurafood.pedidos.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.alurafood.pedidos.dto.PedidoDto;
 import br.com.alurafood.pedidos.dto.StatusDto;
 import br.com.alurafood.pedidos.model.Pedido;
 import br.com.alurafood.pedidos.model.Status;
 import br.com.alurafood.pedidos.repository.PedidoRepository;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PedidoService {
 
     @Autowired
     private PedidoRepository repository;
 
     @Autowired
-    private final ModelMapper modelMapper;
+    private  ModelMapper modelMapper;
 
 
     public List<PedidoDto> obterTodos() {
@@ -45,7 +45,7 @@ public class PedidoService {
         pedido.setDataHora(LocalDateTime.now());
         pedido.setStatus(Status.REALIZADO);
         pedido.getItens().forEach(item -> item.setPedido(pedido));
-        Pedido salvo = repository.save(pedido);
+        repository.save(pedido);
 
         return modelMapper.map(pedido, PedidoDto.class);
     }
