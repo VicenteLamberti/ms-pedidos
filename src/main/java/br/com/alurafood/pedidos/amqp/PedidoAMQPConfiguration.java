@@ -41,6 +41,7 @@ public class PedidoAMQPConfiguration {
 		return ExchangeBuilder.fanoutExchange("pagamentos.ex").build();
 	}
 	
+	
 	@Bean
 	public Binding bindPagamentoPedido(FanoutExchange fanoutExchange) {
 		return BindingBuilder.bind(filaDetalhesPedido())
